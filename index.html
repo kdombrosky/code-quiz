@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timed Code Quiz</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+
+<body>
+    <header>
+        <!-- View High Scores Link in top left corner -->
+        <p><a>View High Scores</a></p>
+        <!-- View Timer Countdown in top right corner -->
+        <!-- #timer will be called by DOM to input time value -->
+        <p id="countdown">Time: 
+            <span id="timer"></span>
+        </p>
+    </header>
+
+    <!-- Quiz Block -->
+    <main class="container">
+        <div class="card">
+
+            <!-- Use this header to edit the text value for the questions -->
+            <!-- edit .innterHTML to change header to questions-->
+            <section id="head-content" class="head-content"></section>
+
+            <!-- use function to clear content: 
+            function clearContent() { document.getElementById(content).innerHTML=""; }-->
+            <section id="content" class="content"></section>
+
+            <!-- container for dynamic button creation-->
+            <!-- use id answer-btns to dynamically add to this container-->
+            <section id="answer-btns" class="answer-btns">
+                <!--<button id="answer" class="btn">Button</button> -->
+            </section>
+
+        </div>
+</main>
+
+
+
+
+<script src="./assets/js/script.js"></script>
+</body>
+</html>
