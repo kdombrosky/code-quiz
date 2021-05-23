@@ -233,27 +233,21 @@ var loadScores = function() {
     // convert tasks from string back into array of objects
     savedScores = JSON.parse(savedScores);
 
-    //loop through array to display on screen 
-    for (var i = 0; i < savedScores.length; i++) {
-        // pass each player score object into another function to print it
-        showScores(savedScores[i]);
-    }
-};
-
-// function to populate highscores on the screen
-var showScores = function(playerObj) { 
-    resetContent(); 
     // content to show the score
     var highScoreHeader = document.createElement("h1");
     highScoreHeader.innerText = "High Scores";
     highScoreHeader.className = "align-left margin";
     endGameContainerEl.appendChild(highScoreHeader);
 
-    // div space to append highscores 
-    var scoreList = document.createElement("div");
-    scoreList.innerHTML = playerObj.player + " - " + playerObj.score; 
-    scoreList.className = "highscore";
-    endGameContainerEl.appendChild(scoreList);
+    
+    //loop through array to display on screen 
+    for (var i = 0; i < savedScores.length; i++) {
+        // div space to append highscores 
+        var scoreList = document.createElement("div");
+        scoreList.innerHTML = savedScores[i].player + " - " + savedScores[i].score; 
+        scoreList.className = "highscore";
+        endGameContainerEl.appendChild(scoreList);
+    }
 
     // buttons underneath to nav back or clear scores
     var backBtn = document.createElement("button");
@@ -266,7 +260,8 @@ var showScores = function(playerObj) {
     clearHighScoresBtn.innerText = "Clear High Scores";
     clearHighScoresBtn.className = "end-btn";
     endGameContainerEl.appendChild(clearHighScoresBtn);
-}
+    //clearHighScoresBtn.addEventListener();
+};
 
 
 // function to reset game after entering highscore

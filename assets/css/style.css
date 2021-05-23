@@ -5,7 +5,7 @@
 :root {
     --primary-color: #531c86;
     --highlight-color: #c079e0;
-    --background-color: #d3b5e0;
+    --background-color: #dac4e4;
 }
 
 body {
@@ -29,11 +29,11 @@ header {
     justify-content: space-between;
 }
 
-header a {
+.view-scores {
     color: var(--highlight-color);
 }
 
-header a:hover {
+.view-scores:hover {
     color: var(--primary-color);
 }
 
@@ -106,9 +106,9 @@ header a:hover {
 }
 
 .highscore {
-    margin: 0 5px;
+    margin: 5px;
     background-color: var(--background-color);
-    padding: 5px 0;
+    padding: 5px;
 }
 
 .margin {
