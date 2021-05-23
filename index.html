@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,12 +10,9 @@
 
 <body>
     <header>
-        <!-- View High Scores Link in top left corner -->
         <p><a>View High Scores</a></p>
-        <!-- View Timer Countdown in top right corner -->
-        <!-- #timer will be called by DOM to input time value -->
-        <p id="countdown">Time: 
-            <span id="timer"></span>
+        <p id="countdown">
+            Time: <span id="timer">0</span>
         </p>
     </header>
 
@@ -23,26 +20,22 @@
     <main class="container">
         <div class="card">
 
-            <!-- Use this header to edit the text value for the questions -->
-            <!-- edit .innterHTML to change header to questions-->
-            <section id="head-content" class="head-content"></section>
-
-            <!-- use function to clear content: 
-            function clearContent() { document.getElementById(content).innerHTML=""; }-->
-            <section id="content" class="content"></section>
-
-            <!-- container for dynamic button creation-->
-            <!-- use id answer-btns to dynamically add to this container-->
-            <section id="answer-btns" class="answer-btns">
-                <!--<button id="answer" class="btn">Button</button> -->
+            <!-- Section to populate head text content -->
+            <section class="head-content">
+                <h1 id="head-content"></h1>
             </section>
 
+            <!-- Section to hold instructions -->
+            <section id="content" class="content"></section>
+
+            <!-- Section to hold answer buttons -->
+            <section id="answer-btns" class="answer-btns"></section>
+
+            <!-- Section to display Correct or Wrong -->
+            <section id="answer-value" class="answer-value"></section>
+
         </div>
-</main>
-
-
-
-
-<script src="./assets/js/script.js"></script>
+    </main>
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>

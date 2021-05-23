@@ -17,6 +17,10 @@ body h1 {
     font-size: 2rem;
 }
 
+p {
+    margin-block-start: 0%;
+}
+
 header {
     padding: 3rem 4rem;
     font-size: 1rem;
@@ -41,21 +45,21 @@ header a:hover {
 
 .card {
     text-align: center;
+    width: 650px;
 }
 
 .head-content {
-
-}
-
-.content {
-
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: left;
 }
 
 .answer-btns button{
     display: block;
+    width: 40%;
+    text-align: start;
 }
-
-
 
 .btn {
     padding: 10px 15px;
@@ -68,4 +72,23 @@ header a:hover {
 
 .btn:hover {
     background-color: var(--highlight-color);
+}
+
+.answer-value p {
+    margin-top: 25px;
+    padding: 10px;
+    text-align: left;
+    border-top: 1px solid rgb(171, 177, 184);
+    color:rgb(171, 177, 184);
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+.submit-btns {
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    margin: 5px;
 }
