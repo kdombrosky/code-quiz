@@ -5,6 +5,7 @@
 :root {
     --primary-color: #531c86;
     --highlight-color: #c079e0;
+    --background-color: #d3b5e0;
 }
 
 body {
@@ -70,7 +71,7 @@ header a:hover {
     margin: 5px 0;
 }
 
-.btn:hover {
+.btn:hover ,.submit-btn:hover{
     background-color: var(--highlight-color);
 }
 
@@ -84,11 +85,27 @@ header a:hover {
     font-style: italic;
 }
 
-.submit-btns {
+.end-btn {
     padding: 5px 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: var(--primary-color);
     color: white;
     border: none;
     margin: 5px;
+}
+
+
+
+.align-left {
+    text-align: left;
+    align-items: flex-start;
+}
+
+.end-game {
+    text-align: left;
+}
+
+.highscore {
+    background-color: var(--background-color);
+    padding: 5px 0;
 }

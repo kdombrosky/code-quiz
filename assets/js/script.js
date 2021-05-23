@@ -10,6 +10,7 @@ var headContentEl = document.querySelector("#head-content");
 var contentEl = document.querySelector("#content");
 var answerContainerEl = document.querySelector("#answer-btns");
 var answerValueContainerEl = document.querySelector("#answer-value");
+var endGameContainerEl = document.querySelector("#end-game");
 
 // array for question objects
 const quizArray = [
@@ -64,6 +65,7 @@ const quizArray = [
 // function to clear content! 
 var clearContent = function() {
     contentEl.innerHTML = "";
+    timeLimit = 75;
 };
 
 // function to reset content for in game
@@ -77,19 +79,28 @@ var resetContent = function() {
     while(answerValueContainerEl.firstChild) {
         answerValueContainerEl.removeChild(answerValueContainerEl.firstChild);
     }
+
+    // remove end game children
+    while(endGameContainerEl.firstChild) {
+        endGameContainerEl.removeChild(endGameContainerEl.firstChild);
+    }
 };
 
 // function to countdown from timer
 var startTimer = function() {
     // timer function decrements every second
     var countdown = setInterval(function() {
-        if(timeLimit >= 1) {
+        if((quizIndex) === quizArray.length) {
+            clearInterval(countdown);
+            return;
+        } else if(timeLimit >= 1) {
             timerEl.textContent = timeLimit;
             timeLimit--;
         } else {
             timerEl.textContent = "0";
             clearInterval(countdown);
             endGame();
+            return;
         }
     }, 1000);
 };
@@ -107,13 +118,13 @@ var selectedAnswer = function(event) {
         answerValue.innerText = "Correct!";
         answerValueContainerEl.appendChild(answerValue);
     } else {
+        //subtract value from timer! 
+        timeLimit = timeLimit - 10;
         // show answer value in answerValueContainerEl
         var answerValue = document.createElement("p");
         answerValue.innerText = "Wrong!";
         answerValueContainerEl.appendChild(answerValue);
 
-        //subtract value from timer! 
-        timeLimit = timeLimit - 10;
     };
     
     populateQuestion();
@@ -142,8 +153,6 @@ var populateQuestion = function() {
 
         answerBtn.addEventListener("click", selectedAnswer);
     });
-
-    console.log(quizIndex);
 };
 
 
@@ -156,6 +165,8 @@ var startQuiz = function() {
 
 // function to load initial files
 var loadContent = function() {
+    resetContent();
+    clearContent();
     // populate with initial instructions
     headContentEl.textContent = "Coding Quiz Challenge";
     
@@ -172,15 +183,112 @@ var loadContent = function() {
     startBtn.addEventListener("click", startQuiz);
 };
 
-// function for highscores
+// ----------- end game below --------------------------
 
-// function for localStorage
+// function for highscores
+var saveScore = function (event) {
+    //prevent reset upon submission 
+    event.preventDefault();
+
+    var initialSave = document.querySelector("input[name='initials']").value;
+
+    playerObject = {player: initialSave, score: timeLimit};
+    highscores.push(playerObject);
+
+    saveScores();
+}
+
+// function to save array of highscores to local storage
+var saveScores = function () {
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+    console.log(localStorage);
+
+    loadScores();
+};
+
+// function to load highscores from localstorage
+var loadScores = function() {
+    resetContent();
+    // retrieve tasks from localStorage
+    var savedScores = localStorage.getItem("highscores");
+
+    if(!savedScores) {
+        return false;
+    }
+
+    // convert tasks from string back into array of objects
+    savedScores = JSON.parse(savedScores);
+
+    //loop through array to display on screen 
+    for (var i = 0; i < savedScores.length; i++) {
+        // pass each player score object into another function to print it
+        showScores(savedScores[i]);
+    }
+};
+
+// function to populate highscores on the screen
+var showScores = function(playerObj) { 
+    resetContent(); 
+    // content to show the score
+    var highScoreHeader = document.createElement("h1");
+    highScoreHeader.innerText = "High Scores";
+    highScoreHeader.className = "align-left";
+    endGameContainerEl.appendChild(highScoreHeader);
+
+    // div space to append highscores 
+    var scoreList = document.createElement("div");
+    scoreList.innerHTML = playerObj.player + " - " + playerObj.score; 
+    scoreList.className = "highscore";
+    endGameContainerEl.appendChild(scoreList);
+
+    // buttons underneath to nav back or clear scores
+    var backBtn = document.createElement("button");
+    backBtn.innerText = "Back";
+    backBtn.className = "end-btn";
+    endGameContainerEl.appendChild(backBtn);
+
+    var clearHighScoresBtn = document.createElement("button");
+    clearHighScoresBtn.innerText = "Clear High Scores";
+    clearHighScoresBtn.className = "end-btn";
+    endGameContainerEl.appendChild(clearHighScoresBtn);
+}
+
+// showScores(savedScores[i]);
+// // inside of for loop
+// }
+// };
 
 // function to reset game after entering highscore
 var endGame = function() {
-    clearContent();
-    headContentEl.textContent = "All done!"
+    headContentEl.textContent = "";
 
+    var scoreHeader = document.createElement("h1");
+    scoreHeader.innerText = "All done!";
+    scoreHeader.className = "align-left";
+    endGameContainerEl.appendChild(scoreHeader);
+
+    var finalScore = document.createElement("p");
+    finalScore.innerHTML = "Your final score is " + timeLimit + ".";
+    finalScore.className = "align-left";
+    endGameContainerEl.appendChild(finalScore);
+
+    var scoreLabel = document.createElement("label");
+    scoreLabel.setAttribute("for", "initials");
+    scoreLabel.innerText = "Enter initials: ";
+    endGameContainerEl.appendChild(scoreLabel);
+
+    var initialsInput = document.createElement("input");
+    initialsInput.setAttribute("type", "text");
+    initialsInput.id = "initials";
+    initialsInput.setAttribute("name", "initials");
+    endGameContainerEl.appendChild(initialsInput);
+
+    var submitBtn = document.createElement("button");
+    submitBtn.className = "end-btn";
+    submitBtn.innerText = "Submit";
+    endGameContainerEl.appendChild(submitBtn);
+
+    submitBtn.addEventListener("click", saveScore); 
 };
 
 
