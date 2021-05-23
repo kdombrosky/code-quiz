@@ -1,11 +1,12 @@
 // global variables
-var highscore = 0;
 var timeLimit = 75; 
 var quizIndex = 0;
 var highscores = [];
+var oldHighscores = [];
 
 // initial page content
 var timerEl = document.querySelector("#timer");
+var viewScoresEl = document.querySelector("#view-scores");
 var headContentEl = document.querySelector("#head-content");
 var contentEl = document.querySelector("#content");
 var answerContainerEl = document.querySelector("#answer-btns");
@@ -66,6 +67,7 @@ const quizArray = [
 var clearContent = function() {
     contentEl.innerHTML = "";
     timeLimit = 75;
+    quizIndex = 0;
 };
 
 // function to reset content for in game
@@ -91,6 +93,8 @@ var startTimer = function() {
     // timer function decrements every second
     var countdown = setInterval(function() {
         if((quizIndex) === quizArray.length) {
+            // increment timeLimit by 1 to account for lag? **NEED TO REVISIT**
+            timeLimit++;
             clearInterval(countdown);
             return;
         } else if(timeLimit >= 1) {
@@ -165,8 +169,10 @@ var startQuiz = function() {
 
 // function to load initial files
 var loadContent = function() {
+    // set and reset initial values
     resetContent();
     clearContent();
+
     // populate with initial instructions
     headContentEl.textContent = "Coding Quiz Challenge";
     
@@ -192,7 +198,7 @@ var saveScore = function (event) {
 
     var initialSave = document.querySelector("input[name='initials']").value;
 
-    playerObject = {player: initialSave, score: timeLimit};
+    var playerObject = {player: initialSave, score: timeLimit};
     highscores.push(playerObject);
 
     saveScores();
@@ -200,7 +206,19 @@ var saveScore = function (event) {
 
 // function to save array of highscores to local storage
 var saveScores = function () {
-    localStorage.setItem("highscores", JSON.stringify(highscores));
+    console.log("local storage 1:");
+    console.log(localStorage);
+    //save old high scores here
+    oldHighScores = localStorage.getItem("highscores");
+    oldHighScores = JSON.parse(oldHighScores);
+    console.log("old high scores");
+    console.log(oldHighscores);
+
+    //combine old high scores and current high score
+    const newHighScores = oldHighscores.concat(highscores);
+
+    localStorage.setItem("highscores", JSON.stringify(newHighScores));
+    console.log("local storage after concat");
     console.log(localStorage);
 
     loadScores();
@@ -208,13 +226,11 @@ var saveScores = function () {
 
 // function to load highscores from localstorage
 var loadScores = function() {
+    clearContent();
     resetContent();
     // retrieve tasks from localStorage
-    var savedScores = localStorage.getItem("highscores");
-
-    if(!savedScores) {
-        return false;
-    }
+    var savedScores = [];
+    savedScores = localStorage.getItem("highscores");
 
     // convert tasks from string back into array of objects
     savedScores = JSON.parse(savedScores);
@@ -232,7 +248,7 @@ var showScores = function(playerObj) {
     // content to show the score
     var highScoreHeader = document.createElement("h1");
     highScoreHeader.innerText = "High Scores";
-    highScoreHeader.className = "align-left";
+    highScoreHeader.className = "align-left margin";
     endGameContainerEl.appendChild(highScoreHeader);
 
     // div space to append highscores 
@@ -243,9 +259,10 @@ var showScores = function(playerObj) {
 
     // buttons underneath to nav back or clear scores
     var backBtn = document.createElement("button");
-    backBtn.innerText = "Back";
+    backBtn.innerText = "Go back";
     backBtn.className = "end-btn";
     endGameContainerEl.appendChild(backBtn);
+    backBtn.addEventListener("click", loadContent);
 
     var clearHighScoresBtn = document.createElement("button");
     clearHighScoresBtn.innerText = "Clear High Scores";
@@ -253,10 +270,6 @@ var showScores = function(playerObj) {
     endGameContainerEl.appendChild(clearHighScoresBtn);
 }
 
-// showScores(savedScores[i]);
-// // inside of for loop
-// }
-// };
 
 // function to reset game after entering highscore
 var endGame = function() {
@@ -264,7 +277,7 @@ var endGame = function() {
 
     var scoreHeader = document.createElement("h1");
     scoreHeader.innerText = "All done!";
-    scoreHeader.className = "align-left";
+    scoreHeader.className = "align-left second-margin";
     endGameContainerEl.appendChild(scoreHeader);
 
     var finalScore = document.createElement("p");
@@ -293,6 +306,8 @@ var endGame = function() {
 
 
 loadContent();
+
+viewScoresEl.addEventListener("click", loadScores);
 
 
 

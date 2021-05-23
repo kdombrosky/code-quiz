@@ -106,6 +106,15 @@ header a:hover {
 }
 
 .highscore {
+    margin: 0 5px;
     background-color: var(--background-color);
     padding: 5px 0;
+}
+
+.margin {
+    margin: 5px;
+}
+
+.second-margin {
+    margin: 10px 0;
 }
