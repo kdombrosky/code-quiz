@@ -206,7 +206,7 @@ var saveScore = function (event) {
 
 // function to save array of highscores to local storage
 var saveScores = function () {
-    console.log("local storage 1:");
+    console.log("local storage from previous game");
     console.log(localStorage);
     //save old high scores here
     oldHighScores = localStorage.getItem("highscores");
