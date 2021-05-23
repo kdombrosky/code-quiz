@@ -93,8 +93,6 @@ var startTimer = function() {
     // timer function decrements every second
     var countdown = setInterval(function() {
         if((quizIndex) === quizArray.length) {
-            // increment timeLimit by 1 to account for lag? **NEED TO REVISIT**
-            timeLimit++;
             clearInterval(countdown);
             return;
         } else if(timeLimit >= 1) {

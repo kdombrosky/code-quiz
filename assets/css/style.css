@@ -71,7 +71,7 @@ header a:hover {
     margin: 5px 0;
 }
 
-.btn:hover ,.submit-btn:hover{
+.btn:hover ,.end-btn:hover{
     background-color: var(--highlight-color);
 }
 
