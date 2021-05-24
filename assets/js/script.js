@@ -2,7 +2,8 @@
 var timeLimit = 75; 
 var quizIndex = 0;
 var highscores = [];
-var oldHighscores = [];
+var oldHighScores = [];
+
 
 // initial page content
 var timerEl = document.querySelector("#timer");
@@ -226,21 +227,28 @@ var loadScores = function() {
     clearHighScoresBtn.innerText = "Clear High Scores";
     clearHighScoresBtn.className = "end-btn";
     endGameContainerEl.appendChild(clearHighScoresBtn);
-    //clearHighScoresBtn.addEventListener();
+    clearHighScoresBtn.addEventListener("click", function(){
+        localStorage.clear();
+        clearContent();
+    });
 };
 
 // function to save array of highscores to local storage
 var saveScores = function () {
     console.log("local storage from previous game");
     console.log(localStorage);
+
     //save old high scores here
+    if (localStorage.getItem("highscores")) {
     oldHighScores = localStorage.getItem("highscores");
     oldHighScores = JSON.parse(oldHighScores);
     console.log("old high scores");
-    console.log(oldHighscores);
+    console.log(oldHighScores);
+    };
 
     //combine old high scores and current high score
-    const newHighScores = oldHighscores.concat(highscores);
+    var newHighScores = oldHighScores.concat(highscores);
+    console.log(newHighScores);
 
     localStorage.setItem("highscores", JSON.stringify(newHighScores));
     console.log("local storage after concat");
