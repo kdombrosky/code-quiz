@@ -63,15 +63,15 @@ const quizArray = [
     
 ];
 //------------------------------------ End Declarations ------------------------------------------
-// function to clear content! 
-var clearContent = function() {
+// function to clear content
+var resetContent = function() {
     contentEl.innerHTML = "";
     timeLimit = 75;
     quizIndex = 0;
 };
 
 // function to reset content for in game
-var resetContent = function() {
+var clearContent = function() {
     // remove button elements if they exist
     while(answerContainerEl.firstChild) {
         answerContainerEl.removeChild(answerContainerEl.firstChild);
@@ -109,7 +109,7 @@ var startTimer = function() {
 
 // function to process selected answer and then once again call populateQuestion()
 var selectedAnswer = function(event) {
-    resetContent();
+    clearContent();
     // check if answer selected has an attribute
     var confirmCorrectAnswer = event.target.hasAttribute("data-confirm");
     quizIndex++;
@@ -126,7 +126,6 @@ var selectedAnswer = function(event) {
         var answerValue = document.createElement("p");
         answerValue.innerText = "Wrong!";
         answerValueContainerEl.appendChild(answerValue);
-
     };
     
     populateQuestion();
@@ -157,10 +156,9 @@ var populateQuestion = function() {
     });
 };
 
-
 // function to start game!
 var startQuiz = function() {
-    clearContent();
+    resetContent();
     startTimer();
     populateQuestion();
 };
@@ -168,8 +166,8 @@ var startQuiz = function() {
 // function to load initial files
 var loadContent = function() {
     // set and reset initial values
-    resetContent();
     clearContent();
+    resetContent();
 
     // populate with initial instructions
     headContentEl.textContent = "Coding Quiz Challenge";
@@ -187,20 +185,49 @@ var loadContent = function() {
     startBtn.addEventListener("click", startQuiz);
 };
 
-// ----------- end game below --------------------------
+//------------------------------------ End Game Below ----------------------------------------
+// Saving score functions run bottom to top
 
-// function for highscores
-var saveScore = function (event) {
-    //prevent reset upon submission 
-    event.preventDefault();
+// function to load highscores from localstorage
+var loadScores = function() {
+    resetContent();
+    clearContent();
+    // retrieve tasks from localStorage
+    var savedScores = [];
+    savedScores = localStorage.getItem("highscores");
 
-    var initialSave = document.querySelector("input[name='initials']").value;
+    // convert tasks from string back into array of objects
+    savedScores = JSON.parse(savedScores);
 
-    var playerObject = {player: initialSave, score: timeLimit};
-    highscores.push(playerObject);
+    // HTML content to show the score
+    // HTML Header
+    var highScoreHeader = document.createElement("h1");
+    highScoreHeader.innerText = "High Scores";
+    highScoreHeader.className = "align-left margin";
+    endGameContainerEl.appendChild(highScoreHeader);
 
-    saveScores();
-}
+    // loop through array to display scores on screen 
+    for (var i = 0; i < savedScores.length; i++) {
+        // div space to append highscores 
+        var scoreList = document.createElement("div");
+        scoreList.innerHTML = savedScores[i].player + " - " + savedScores[i].score; 
+        scoreList.className = "highscore";
+        endGameContainerEl.appendChild(scoreList);
+    }
+
+    // HTML Buttons
+    var backBtn = document.createElement("button");
+    backBtn.innerText = "Go back";
+    backBtn.className = "end-btn";
+    endGameContainerEl.appendChild(backBtn);
+    backBtn.addEventListener("click", loadContent);
+
+    var clearHighScoresBtn = document.createElement("button");
+    clearHighScoresBtn.innerText = "Clear High Scores";
+    clearHighScoresBtn.className = "end-btn";
+    endGameContainerEl.appendChild(clearHighScoresBtn);
+    //clearHighScoresBtn.addEventListener();
+};
 
 // function to save array of highscores to local storage
 var saveScores = function () {
@@ -222,47 +249,18 @@ var saveScores = function () {
     loadScores();
 };
 
-// function to load highscores from localstorage
-var loadScores = function() {
-    clearContent();
-    resetContent();
-    // retrieve tasks from localStorage
-    var savedScores = [];
-    savedScores = localStorage.getItem("highscores");
+// function for highscores
+var saveScore = function (event) {
+    //prevent reset upon submission 
+    event.preventDefault();
 
-    // convert tasks from string back into array of objects
-    savedScores = JSON.parse(savedScores);
+    var initialSave = document.querySelector("input[name='initials']").value;
 
-    // content to show the score
-    var highScoreHeader = document.createElement("h1");
-    highScoreHeader.innerText = "High Scores";
-    highScoreHeader.className = "align-left margin";
-    endGameContainerEl.appendChild(highScoreHeader);
+    var playerObject = {player: initialSave, score: timeLimit};
+    highscores.push(playerObject);
 
-    
-    //loop through array to display on screen 
-    for (var i = 0; i < savedScores.length; i++) {
-        // div space to append highscores 
-        var scoreList = document.createElement("div");
-        scoreList.innerHTML = savedScores[i].player + " - " + savedScores[i].score; 
-        scoreList.className = "highscore";
-        endGameContainerEl.appendChild(scoreList);
-    }
-
-    // buttons underneath to nav back or clear scores
-    var backBtn = document.createElement("button");
-    backBtn.innerText = "Go back";
-    backBtn.className = "end-btn";
-    endGameContainerEl.appendChild(backBtn);
-    backBtn.addEventListener("click", loadContent);
-
-    var clearHighScoresBtn = document.createElement("button");
-    clearHighScoresBtn.innerText = "Clear High Scores";
-    clearHighScoresBtn.className = "end-btn";
-    endGameContainerEl.appendChild(clearHighScoresBtn);
-    //clearHighScoresBtn.addEventListener();
-};
-
+    saveScores();
+}
 
 // function to reset game after entering highscore
 var endGame = function() {
@@ -297,9 +295,10 @@ var endGame = function() {
     submitBtn.addEventListener("click", saveScore); 
 };
 
-
+// populate instructions on page load
 loadContent();
 
+// to see saved high scores
 viewScoresEl.addEventListener("click", loadScores);
 
 
