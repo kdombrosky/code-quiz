@@ -63,14 +63,14 @@ const quizArray = [
     
 ];
 //------------------------------------ End Declarations ------------------------------------------
-// function to clear content
+// function to reset content
 var resetContent = function() {
     contentEl.innerHTML = "";
     timeLimit = 75;
     quizIndex = 0;
 };
 
-// function to reset content for in game
+// function to clear content for in game
 var clearContent = function() {
     // remove button elements if they exist
     while(answerContainerEl.firstChild) {
