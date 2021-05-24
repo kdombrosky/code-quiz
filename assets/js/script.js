@@ -229,7 +229,7 @@ var loadScores = function() {
     endGameContainerEl.appendChild(clearHighScoresBtn);
     clearHighScoresBtn.addEventListener("click", function(){
         localStorage.clear();
-        clearContent();
+        loadContent();
     });
 };
 
